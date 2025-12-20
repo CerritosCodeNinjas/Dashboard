@@ -31,10 +31,7 @@ function attemptNinjaLogin() {
 function attemptAdminLogin() { 
     const e = document.getElementById('admin-email').value; 
     const p = document.getElementById('admin-pass').value; 
-    if(p === "@2633Ninjas") { 
-        loginAsAdmin(); 
-        return; 
-    } 
+
     if(auth) { 
         auth.signInWithEmailAndPassword(e, p).then(() => loginAsAdmin()).catch(err => { 
             document.getElementById('login-error-msg').style.display = 'block'; 
@@ -63,12 +60,20 @@ function loginAsAdmin() {
     }
 }
 
+// auth.js - Update this function
 function enterDashboard() { 
     document.getElementById('login-view').style.display = 'none'; 
     document.getElementById('main-app').style.display = 'flex'; 
     if(currentUser && currentUser.name) document.getElementById('current-user-name').innerText = currentUser.name.split(' ')[0]; 
-    if(currentUser && currentUser.isAdmin) document.getElementById('floating-admin-toggle').style.display = 'flex'; 
-    else document.getElementById('floating-admin-toggle').style.display = 'none'; 
+    
+    if(currentUser && currentUser.isAdmin) {
+        document.getElementById('floating-admin-toggle').style.display = 'flex';
+        // ADD THESE LINES:
+        loadCatalog(); 
+        loadQueue();
+    } else {
+        document.getElementById('floating-admin-toggle').style.display = 'none';
+    }
     refreshAll(); 
-
 }
+
